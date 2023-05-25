@@ -1,29 +1,35 @@
 import React, {createContext, useContext, useReducer} from 'react';
-import {default as initialQuizState} from '../../config/questions.json';
 import {Quiz} from './types';
+import reducer, {AppAction} from './reducer';
+import quizData from '../../config/questions.json';
 
 export const initialState: Quiz.QuizState = {
-  QuizContent: initialQuizState,
-  selectedAnswers: {},
+  quizData,
+  selectedAnswers: [],
+  setSelectedAnswers: (val: Quiz.Selections) => {},
 };
 
-export const QuizContext = createContext(initialState);
+const QuizContext = createContext<{
+  state: Quiz.QuizState;
+  dispatch: React.Dispatch<AppAction>;
+}>({
+  state: initialState,
+  dispatch: () => {},
+});
 
-export const useQuizContext = (): Quiz.QuizState => {
-  const context = useContext(QuizContext);
-  if (!context) {
-    throw new Error('Context must be initialized!');
-  }
-  return context;
+export const useQuizContext = (): {
+  state: Quiz.QuizState;
+  dispatch: React.Dispatch<AppAction>;
+} => {
+  const {state, dispatch} = useContext(QuizContext);
+  return {state, dispatch};
 };
 
-export const QuizContextProvider = ({
-  reducer,
-  initialState,
-  children,
-}: Quiz.QuizContextProvider) => (
-  //@ts-ignore
-  <QuizContext.Provider value={useReducer(reducer, initialState)}>
-    {children}
-  </QuizContext.Provider>
-);
+export const QuizContextProvider = ({children}: Quiz.QuizContextProvider) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return (
+    <QuizContext.Provider value={{state, dispatch}}>
+      {children}
+    </QuizContext.Provider>
+  );
+};

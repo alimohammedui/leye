@@ -1,26 +1,29 @@
-import {
-  Reducer,
-  ReducerAction,
-  DispatchWithoutAction,
-  ReactElement,
-} from 'react';
+import {ReactElement} from 'react';
 
 export declare namespace Quiz {
+  interface Selections {
+    selection: string;
+    point: number;
+    isSelected: boolean;
+    question?: string;
+  }
+
+  interface QuizSelectionContent {
+    question: string;
+    selections: Array<Selections>;
+  }
+
   interface Content {
-    questions: Array<{
-      question: string;
-      selections: Array<{selection: string; point: number}>;
-    }>;
+    questions: Array<QuizSelectionContent>;
   }
 
   interface QuizState {
-    QuizContent: Content;
-    selectedAnswers: Record<number, string>;
+    quizData: Content;
+    selectedAnswers: Selections[];
+    setSelectedAnswers: (val: Selections) => void;
   }
 
   interface QuizContextProvider {
-    reducer: Reducer<QuizState, ReducerAction<DispatchWithoutAction>>;
-    initialState: QuizState;
     children: ReactElement;
   }
 }

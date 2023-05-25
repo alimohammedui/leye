@@ -1,20 +1,31 @@
+import {initialState} from './quizContext';
 import {Quiz} from './types';
 
-const reducer = (state: Quiz.QuizState, action: any) => {
+export type AppAction =
+  | {type: 'SET_SELECTION'; payload: Quiz.Selections}
+  | {type: 'UPDATE_SELECTION'};
+
+const reducer = (state: Quiz.QuizState, action: AppAction): Quiz.QuizState => {
   switch (action.type) {
     case 'SET_SELECTION':
       return {
         ...state,
-        currentScore: action.payload,
+        selectedAnswers: [...state.selectedAnswers.concat(action.payload)],
+        quizData: {
+          ...state.quizData,
+          questions: state.quizData.questions.map(que => ({
+            ...que,
+            selections: que.selections.map(sel => ({
+              ...sel,
+              ...(que.question === action.payload.question && {
+                isSelected: true,
+              }),
+            })),
+          })),
+        },
       };
-    case 'UPDATE_SCORE':
-      return {
-        ...state,
-        score: [
-          ...state.QuizContent.questions,
-          ...action.payload.QuizContent.questions,
-        ],
-      };
+    case 'UPDATE_SELECTION':
+      return initialState;
     default:
       return state;
   }

@@ -4,20 +4,24 @@
       "question": "Pick a city you would like to jet off to",
       "selections": [
         {
-          "selection": "To  kyo",
-          "point": 2
+          "selection": "Tokyo",
+          "point": 2,
+          "isSelected": false
         },
         {
           "selection": "Paris",
-          "point": 4
+          "point": 4,
+          "isSelected": false
         },
         {
           "selection": "Los Angeles",
-          "point": 1
+          "point": 1,
+          "isSelected": false
         },
         {
           "selection": "Nashville",
-          "point": 3
+          "point": 3,
+          "isSelected": false
         }
       ]
     },
@@ -26,19 +30,48 @@
       "selections": [
         {
           "selection": "Stranger Things",
-          "point": 2
+          "point": 2,
+          "isSelected": false
         },
         {
           "selection": "The Crown",
-          "point": 4
+          "point": 4,
+          "isSelected": false
         },
         {
           "selection": "House of Cards",
-          "point": 1
+          "point": 1,
+          "isSelected": false
         },
         {
           "selection": "Wednesday",
-          "point": 3
+          "point": 3,
+          "isSelected": false
+        }
+      ]
+    },
+    {
+      "question": "What is the first thing you reach for in the morning?",
+      "selections": [
+        {
+          "selection": "Coffee",
+          "point": 1,
+          "isSelected": false
+        },
+        {
+          "selection": "Phone",
+          "point": 4,
+          "isSelected": false
+        },
+        {
+          "selection": "Glasses",
+          "point": 2,
+          "isSelected": false
+        },
+        {
+          "selection": "TV Remote",
+          "point": 3,
+          "isSelected": false
         }
       ]
     },
@@ -47,19 +80,23 @@
       "selections": [
         {
           "selection": "Eagle",
-          "point": 1
+          "point": 1,
+          "isSelected": false
         },
         {
           "selection": "Dog",
-          "point": 3
+          "point": 3,
+          "isSelected": false
         },
         {
           "selection": "Deer",
-          "point": 4
+          "point": 4,
+          "isSelected": false
         },
         {
           "selection": "Monkey",
-          "point": 2
+          "point": 2,
+          "isSelected": false
         }
       ]
     },
@@ -68,19 +105,23 @@
       "selections": [
         {
           "selection": "Invisibility",
-          "point": 3
+          "point": 3,
+          "isSelected": false
         },
         {
           "selection": "Mind Reading",
-          "point": 4
+          "point": 4,
+          "isSelected": false
         },
         {
           "selection": "Telekinesis",
-          "point": 1
+          "point": 1,
+          "isSelected": false
         },
         {
           "selection": "Flight",
-          "point": 2
+          "point": 2,
+          "isSelected": false
         }
       ]
     },
@@ -89,19 +130,23 @@
       "selections": [
         {
           "selection": "Romance",
-          "point": 4
+          "point": 4,
+          "isSelected": false
         },
         {
           "selection": "Thriller",
-          "point": 2
+          "point": 2,
+          "isSelected": false
         },
         {
           "selection": "Comedy",
-          "point": 3
+          "point": 3,
+          "isSelected": false
         },
         {
           "selection": "Adventure",
-          "point": 1
+          "point": 1,
+          "isSelected": false
         }
       ]
     }
