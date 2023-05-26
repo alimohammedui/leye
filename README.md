@@ -18,7 +18,7 @@ If you run into any build issues, make sure you have the tools installed with be
  - OpenJDK Runtime Environment (build 20.0.1+9-29) OpenJDK 64-Bit Server V (build 20.0.1+9-29, mixed mode, sharing)
 
 ## Demo
-![](https://github.com/leye/leye.gif)
+![](https://github.com/alimohammedui/leye/leye.gif)
     
 ## Running Tests
 
