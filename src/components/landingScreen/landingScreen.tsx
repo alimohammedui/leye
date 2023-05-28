@@ -89,7 +89,7 @@ const Carousel: React.FC<any> = ({navigation}) => {
       <View
         style={[styles.carouselItem, {borderWidth: 5, borderColor: '#738ea7'}]}>
         <Text testID={item.question} style={styles.questionText}>
-          {item.question.toUpperCase()}
+          {item.question}
         </Text>
 
         <View style={styles.carouselInner} />

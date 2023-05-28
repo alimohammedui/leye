@@ -25,6 +25,7 @@ const styleCreator = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
     color: '#010101',
+    textTransform: 'uppercase',
   },
   optionContainer: {
     marginBottom: 10,

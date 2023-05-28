@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
-import Container from './wrapper';
 
 interface RadioCellProps {
   label: string;
