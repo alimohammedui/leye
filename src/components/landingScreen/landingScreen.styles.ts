@@ -59,6 +59,7 @@ const styleCreator = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     maxWidth: width / 1.5,
+    color: 'grey',
   },
   carouselInner: {
     height: 4,
