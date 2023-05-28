@@ -57,7 +57,6 @@ const useLandingScreen = ({navigation}: any) => {
 
   const getButtonLabel = useCallback(() => {
     let label = 'Next Question';
-    console.log('===> currentIndex', currentIndex);
     const isLastItem = currentIndex === state.quizData.questions.length - 1;
     if (isLastItem) {
       label = 'See Recommendation';

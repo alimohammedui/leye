@@ -16,9 +16,7 @@ const Rubric: React.FC<any> = React.memo(({navigation}) => {
             resizeMode="contain"
           />
         )}
-        <Text
-          testID={value}
-          style={styles.suggestionText}>{`Your suggestion is: ${
+        <Text testID={value} style={styles.suggestionText}>{`We Recommend: ${
           value ?? 'Unknown'
         }`}</Text>
       </View>
