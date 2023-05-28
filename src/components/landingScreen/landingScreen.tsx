@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {
   View,
   FlatList,
@@ -15,7 +15,7 @@ import useLandingScreen from './useLandingScreen';
 
 const {width} = Dimensions.get('window');
 
-const Carousel: React.FC<any> = ({navigation}) => {
+const Carousel: React.FC<any> = memo(({navigation}) => {
   const {
     state,
     getButtonLabel,
@@ -102,6 +102,6 @@ const Carousel: React.FC<any> = ({navigation}) => {
       />
     </ImageBackground>
   );
-};
+});
 
 export default Carousel;

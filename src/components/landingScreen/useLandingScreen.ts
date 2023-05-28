@@ -25,12 +25,12 @@ const useLandingScreen = ({navigation}: any) => {
         return;
       });
     } else {
-      setCurrentIndex(nextIndex);
       withDelay(() => {
         carouselRef.current?.scrollToIndex({
           index: nextIndex,
           animated: true,
         });
+        setCurrentIndex(nextIndex);
       });
     }
   }, [currentIndex]);
@@ -57,6 +57,7 @@ const useLandingScreen = ({navigation}: any) => {
 
   const getButtonLabel = useCallback(() => {
     let label = 'Next Question';
+    console.log('===> currentIndex', currentIndex);
     const isLastItem = currentIndex === state.quizData.questions.length - 1;
     if (isLastItem) {
       label = 'See Recommendation';
