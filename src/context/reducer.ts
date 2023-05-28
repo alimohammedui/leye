@@ -10,25 +10,33 @@ const reducer = (state: Quiz.QuizState, action: AppAction): Quiz.QuizState => {
     case 'SET_SELECTION':
       return {
         ...state,
-        selectedAnswers: [...state.selectedAnswers.concat(action.payload)],
-        quizData: {
-          ...state.quizData,
-          questions: state.quizData.questions.map(que => ({
-            ...que,
-            selections: que.selections.map(sel => ({
-              ...sel,
-              ...(que.question === action.payload.question && {
-                isSelected: true,
-              }),
-            })),
-          })),
-        },
+        selectedAnswers: updateStateAnswers(state, action.payload),
       };
     case 'UPDATE_SELECTION':
       return initialState;
     default:
       return state;
   }
+};
+const updateStateAnswers = (
+  state: Quiz.QuizState,
+  payload: Quiz.Selections,
+) => {
+  const updatedItems = [...state.selectedAnswers];
+  const index = updatedItems.findIndex(
+    item => item.question === payload.question,
+  );
+
+  if (index !== -1 && updatedItems[index].question === payload.question) {
+    updatedItems.splice(index, 1, {
+      ...updatedItems[index],
+      point: payload.point,
+    });
+  } else {
+    updatedItems.push(payload);
+  }
+
+  return updatedItems;
 };
 
 export default reducer;

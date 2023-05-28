@@ -2,14 +2,17 @@ import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {
   View,
   FlatList,
-  TouchableOpacity,
   Animated,
   Text,
   StyleSheet,
   Dimensions,
+  ImageBackground,
 } from 'react-native';
 import {useQuizContext} from '../../context/quizContext';
 import {Quiz} from '../../context/types';
+import RadioCell from '../radioCell';
+import Wrapper from '../wrapper';
+import styleCreator from './landingScreen.styles';
 
 const {width} = Dimensions.get('window');
 
@@ -21,6 +24,30 @@ const Carousel: React.FC<any> = ({navigation}) => {
   const carouselRef = useRef<FlatList<any>>(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const isOptionSelected = selectedOptions[currentIndex] === undefined;
+
+  const handleNextButton = useCallback(() => {
+    const nextIndex = currentIndex + 1;
+    const isLastItem = currentIndex === state.quizData.questions.length - 1;
+    if (isLastItem) {
+      withDelay(() => {
+        navigation.navigate('RubricScreen');
+        setCurrentIndex(0);
+        setSelectedOptions([]);
+        carouselRef.current?.scrollToIndex({index: 0, animated: false});
+        return;
+      });
+    } else {
+      setCurrentIndex(nextIndex);
+      withDelay(() => {
+        carouselRef.current?.scrollToIndex({
+          index: nextIndex,
+          animated: true,
+        });
+      });
+    }
+  }, [currentIndex]);
 
   const handleOptionPress = useCallback(
     (
@@ -33,30 +60,23 @@ const Carousel: React.FC<any> = ({navigation}) => {
         updatedSelectedOptions[questionIndex] = selectionIndex;
         return updatedSelectedOptions;
       });
+      setCurrentIndex(questionIndex);
       dispatch({
         type: 'SET_SELECTION',
         payload: selection,
       });
-      const nextIndex = questionIndex + 1;
-      const isLastItem = questionIndex === state.quizData.questions.length - 1;
-      if (isLastItem) {
-        withDelay(() => {
-          navigation.navigate('RubricScreen');
-          setSelectedOptions([]);
-          carouselRef.current?.scrollToIndex({index: 0, animated: false});
-          return;
-        });
-      } else {
-        withDelay(() => {
-          carouselRef.current?.scrollToIndex({
-            index: nextIndex,
-            animated: true,
-          });
-        });
-      }
     },
-    [],
+    [selectedOptions],
   );
+
+  const getButtonLabel = useCallback(() => {
+    let label = 'Next Question';
+    const isLastItem = currentIndex === state.quizData.questions.length - 1;
+    if (isLastItem) {
+      label = 'See Recommendation';
+    }
+    return label;
+  }, [currentIndex]);
 
   const renderItem = ({
     item,
@@ -66,38 +86,51 @@ const Carousel: React.FC<any> = ({navigation}) => {
     index: number;
   }) => {
     return (
-      <View style={[styles.carouselItem, {backgroundColor: '#E7F0D2'}]}>
-        <Text style={styles.questionText}>{item.question}</Text>
-        <View style={styles.optionContainer}>
+      <View
+        style={[styles.carouselItem, {borderWidth: 5, borderColor: '#738ea7'}]}>
+        <Text testID={item.question} style={styles.questionText}>
+          {item.question.toUpperCase()}
+        </Text>
+
+        <View style={styles.carouselInner} />
+        <Wrapper
+          buttonLabel={getButtonLabel()}
+          onPressButton={handleNextButton}
+          disabled={isOptionSelected}>
           {item.selections.map((selection, selectionIndex) => (
-            <TouchableOpacity
-              key={`${index}-${selectionIndex}`}
-              style={[
-                styles.optionButton,
-                {
-                  backgroundColor:
-                    selectedOptions[index] === selectionIndex
-                      ? '#006400'
-                      : '#3d3d3d',
-                },
-              ]}
+            <RadioCell
+              key={`option-button-${index}-${selectionIndex}`}
               testID={`option-button-${index}-${selectionIndex}`}
-              onPress={() =>
+              label={selection.selection}
+              onSelect={() =>
                 handleOptionPress(index, selectionIndex, {
                   ...selection,
                   question: item.question,
                 })
-              }>
-              <Text style={styles.optionButtonText}>{selection.selection}</Text>
-            </TouchableOpacity>
+              }
+              selected={selectedOptions[index] === selectionIndex}
+            />
           ))}
-        </View>
+        </Wrapper>
       </View>
     );
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: '#E7F0D2'}]}>
+    <ImageBackground
+      source={require('../../../assets/pattern.jpg')}
+      style={(StyleSheet.absoluteFillObject, [{flex: 1}])}>
+      <View style={styles.innerContainer}>
+        <Text style={styles.header}>Quiz</Text>
+        <Text
+          style={{
+            ...styles.subHeader,
+            maxWidth: width / 1.5,
+          }}>
+          Discover your perfect restaurant match by taking our interactive Quiz
+          and receive personalized recommendations based on your selections.
+        </Text>
+      </View>
       <FlatList
         ref={carouselRef}
         data={state.quizData.questions}
@@ -114,48 +147,9 @@ const Carousel: React.FC<any> = ({navigation}) => {
           },
         )}
         scrollEventThrottle={16}
-        contentContainerStyle={{alignItems: 'center'}}
       />
-    </View>
+    </ImageBackground>
   );
 };
 
 export default Carousel;
-
-const styleCreator = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  carouselItem: {
-    width: width - 20,
-    height: 250,
-    backgroundColor: '#f0f0f0',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 10,
-    borderRadius: 8,
-    elevation: 4,
-  },
-  questionText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  optionContainer: {
-    marginBottom: 10,
-  },
-  optionButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    backgroundColor: '#007aff',
-    borderRadius: 4,
-    marginBottom: 5,
-  },
-  optionButtonText: {
-    color: '#fff',
-    fontSize: 14,
-    textAlign: 'center',
-  },
-});

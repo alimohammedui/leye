@@ -1,8 +1,8 @@
 import React from 'react';
-import {render, fireEvent} from '@testing-library/react-native';
-import Carousel from '../components/landingScreen/landingScreen';
+import {render} from '@testing-library/react-native';
+import Carousel from '../landingScreen';
 
-jest.mock('../context/quizContext', () => ({
+jest.mock('../../../context/quizContext', () => ({
   useQuizContext: jest.fn(() => ({
     state: {
       quizData: {
@@ -34,8 +34,10 @@ jest.mock('../context/quizContext', () => ({
 
 describe('Carousel', () => {
   test('renders correctly', () => {
-    const {getByText, getAllByTestId} = render(<Carousel />);
-    expect(getByText('Pick a city you would like to jet off to')).toBeTruthy();
+    const {getByTestId, getAllByTestId} = render(<Carousel />);
+    expect(
+      getByTestId('Pick a city you would like to jet off to'),
+    ).toBeTruthy();
     expect(getAllByTestId(/option-button/)).toHaveLength(8);
   });
 });

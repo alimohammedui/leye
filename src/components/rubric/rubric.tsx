@@ -1,13 +1,7 @@
 import React, {useCallback, useMemo} from 'react';
-import {
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import {useQuizContext} from '../../context/quizContext';
+import styles from './rubrik.styles';
 
 export function getValueFromRange(result: number) {
   const ranges = [
@@ -55,8 +49,6 @@ const Rubric: React.FC<any> = React.memo(({navigation}) => {
     [suggestionBasedOnTotal],
   );
 
-  const styles = useMemo(() => createStyles(), []);
-
   const handleStartOver = useCallback(() => {
     dispatch({type: 'UPDATE_SELECTION'});
     navigation.navigate('LandingScreen');
@@ -88,39 +80,3 @@ const Rubric: React.FC<any> = React.memo(({navigation}) => {
 });
 
 export default Rubric;
-
-const createStyles = () => {
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'black',
-    },
-    content: {
-      justifyContent: 'center',
-      alignContent: 'center',
-    },
-    image: {
-      width: 400,
-      height: 400,
-      backgroundColor: 'black',
-    },
-    suggestionText: {
-      textAlign: 'center',
-      fontSize: 22,
-      marginTop: 30,
-      color: '#fff',
-    },
-    startOverButton: {
-      alignSelf: 'flex-end',
-      position: 'absolute',
-      bottom: 40,
-      right: 40,
-      borderWidth: 1,
-      borderColor: 'blue',
-    },
-    startOverButtonText: {
-      color: '#fff',
-      fontSize: 18,
-    },
-  });
-};
