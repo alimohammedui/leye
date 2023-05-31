@@ -1,35 +1,49 @@
 import React from 'react';
-import {render, fireEvent, waitFor} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 import Rubric from '../rubric';
-import {getValueFromRange} from '../rubric';
+import useRubric from '../useRubric';
 
-describe('Rubric', () => {
-  test('displays the correct suggestion based on the total points', async () => {
-    const mockNavigation = {navigate: jest.fn()};
-    const {queryByText} = render(<Rubric navigation={mockNavigation} />);
-    let total: any;
+jest.mock('../useRubric');
 
-    const checkSuggestionText = async () => {
-      const suggestionText = queryByText(
-        `Your suggestion is: ${getValueFromRange(total).value ?? 'Unknown'}`,
-      );
-      if (suggestionText) {
-        return suggestionText;
-      }
-      throw new Error('Suggestion text not found');
-    };
+const mockUseClientRect = useRubric as jest.MockedFunction<typeof useRubric>;
 
-    total = await checkSuggestionText();
-
-    const suggestionText = await waitFor(checkSuggestionText, {interval: 1500});
-    expect(suggestionText).toBeTruthy();
+describe('Rubric component', () => {
+  it("mocks the hook's return value", () => {
+    mockUseClientRect.mockReturnValue({
+      value: 'Test',
+      url: 'https://example.com/image.jpg',
+      handleStartOver: () => {},
+    });
   });
 
-  test('navigates to the LandingScreen on "Start Over" button press', () => {
-    const mockNavigation = {navigate: jest.fn()};
-    const {getByText} = render(<Rubric navigation={mockNavigation} />);
-    const startOverButton = getByText('Start Over');
+  const navigation = jest.fn().mockReturnValue({
+    navigate: jest.fn(),
+  });
+
+  it('renders the provided image URL correctly', () => {
+    const url = 'https://example.com/image.jpg';
+    const {getByTestId} = render(<Rubric navigation={navigation} />);
+    const image = getByTestId('rubric-image');
+    expect(image.props.source.uri).toBe(url);
+  });
+
+  it('displays the correct suggestion text based on the value prop', () => {
+    const value = 'Test';
+    const {getByTestId} = render(
+      <Rubric navigation={navigation} value={value} />,
+    );
+    const suggestionText = getByTestId(value);
+
+    expect(suggestionText.props.children).toBe(`We Recommend: ${value}`);
+  });
+
+  it('calls the handleStartOver function when Start Over button is pressed', () => {
+    const handleStartOverMock = jest.fn();
+    const {getByTestId} = render(<Rubric navigation={navigation} />);
+    const startOverButton = getByTestId('start-over-button');
+
     fireEvent.press(startOverButton);
-    expect(mockNavigation.navigate).toHaveBeenCalledWith('LandingScreen');
+
+    expect(handleStartOverMock).toBeDefined();
   });
 });

@@ -1,10 +1,11 @@
-import {useCallback, useRef, useState, useMemo} from 'react';
+import {useCallback, useRef, useState, useMemo, useEffect} from 'react';
 import {useQuizContext} from '../../context/quizContext';
-import {Animated, FlatList} from 'react-native';
+import {Alert, Animated, BackHandler, FlatList, Platform} from 'react-native';
 import {Quiz} from '../../context/types';
 import styleCreator from './landingScreen.styles';
 
 const withDelay = (callback: any, delay = 500) => setTimeout(callback, delay);
+const isAndroid = Platform.OS === 'android';
 
 const useLandingScreen = ({navigation}: any) => {
   const {state, dispatch} = useQuizContext();
@@ -12,6 +13,41 @@ const useLandingScreen = ({navigation}: any) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleBackButton = useCallback(() => {
+    if (isAndroid) {
+      BackHandler.addEventListener('hardwareBackPress', () => {
+        Alert.alert('Exit App?', '', [
+          {
+            style: 'destructive',
+            text: 'Yes',
+            onPress: () => BackHandler.exitApp(),
+          },
+          {
+            text: 'No',
+            style: 'cancel',
+            onPress: () => {},
+          },
+        ]);
+
+        return true;
+      });
+    }
+  }, [isAndroid]);
+
+  const cleanupHandler = useCallback(
+    () =>
+      isAndroid &&
+      BackHandler.removeEventListener('hardwareBackPress', () => false),
+    [isAndroid],
+  );
+
+  useEffect(() => {
+    handleBackButton();
+    return () => {
+      cleanupHandler();
+    };
+  }, []);
 
   const handleNextButton = useCallback(() => {
     const nextIndex = currentIndex + 1;

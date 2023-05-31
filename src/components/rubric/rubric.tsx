@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
-import styles from './rubrik.styles';
+import styles from './rubric.styles';
 import useRubric from './useRubric';
 
 const Rubric: React.FC<any> = React.memo(({navigation}) => {
@@ -11,6 +11,7 @@ const Rubric: React.FC<any> = React.memo(({navigation}) => {
       <View style={styles.content}>
         {url && (
           <Image
+            testID="rubric-image"
             source={{uri: url, scale: 1}}
             style={styles.image}
             resizeMode="contain"
@@ -21,6 +22,7 @@ const Rubric: React.FC<any> = React.memo(({navigation}) => {
         }`}</Text>
       </View>
       <TouchableOpacity
+        testID="start-over-button"
         onPress={handleStartOver}
         style={styles.startOverButton}>
         <Text style={styles.startOverButtonText}>Start Over</Text>
