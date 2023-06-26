@@ -4,7 +4,8 @@ import {Alert, Animated, BackHandler, FlatList, Platform} from 'react-native';
 import {Quiz} from '../../context/types';
 import styleCreator from './landingScreen.styles';
 
-const withDelay = (callback: any, delay = 500) => setTimeout(callback, delay);
+const withDelay = (callback: () => void, delay = 500) =>
+  setTimeout(callback, delay);
 const isAndroid = Platform.OS === 'android';
 
 const useLandingScreen = ({navigation}: any) => {
@@ -84,7 +85,7 @@ const useLandingScreen = ({navigation}: any) => {
       });
       setCurrentIndex(questionIndex);
       dispatch({
-        type: 'SET_SELECTION',
+        type: Quiz.Action.SET_SELECTION,
         payload: selection,
       });
     },

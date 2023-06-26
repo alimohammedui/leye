@@ -2,17 +2,17 @@ import {initialState} from './quizContext';
 import {Quiz} from './types';
 
 export type AppAction =
-  | {type: 'SET_SELECTION'; payload: Quiz.Selections}
-  | {type: 'UPDATE_SELECTION'};
+  | {type: Quiz.Action.SET_SELECTION; payload: Quiz.Selections}
+  | {type: Quiz.Action.UPDATE_SELECTION};
 
 const reducer = (state: Quiz.QuizState, action: AppAction): Quiz.QuizState => {
   switch (action.type) {
-    case 'SET_SELECTION':
+    case Quiz.Action.SET_SELECTION:
       return {
         ...state,
         selectedAnswers: updateStateAnswers(state, action.payload),
       };
-    case 'UPDATE_SELECTION':
+    case Quiz.Action.UPDATE_SELECTION:
       return initialState;
     default:
       return state;

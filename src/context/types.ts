@@ -26,4 +26,9 @@ export declare namespace Quiz {
   interface QuizContextProvider {
     children: ReactElement;
   }
+
+  enum Action {
+    'SET_SELECTION',
+    'UPDATE_SELECTION',
+  }
 }

@@ -16,6 +16,7 @@ const SplashScreen = ({navigation}: {navigation: NavigationProp<any>}) => {
     <View style={{flex: 1, backgroundColor: 'beige'}}>
       <StatusBar hidden />
       <LottieView
+        testID="start-animation"
         source={{
           uri: 'https://assets7.lottiefiles.com/packages/lf20_ysas4vcp.json',
         }}
